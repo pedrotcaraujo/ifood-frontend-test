@@ -1,0 +1,23 @@
+.Playlist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+}
+
+.Playlist-item {
+    list-style: none;
+}
+
+.Playlist-message {
+    font-size: 3em;
+    text-shadow: 1px 1px 5px #000;
+}
+
+.Playlist-image {
+    box-shadow: 1px 1px 50px #000;
+}
+
+.Playlist-figcaption {
+    margin-top: 10px;
+}

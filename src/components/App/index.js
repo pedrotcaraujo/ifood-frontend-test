@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
+import AuthorizeConstants from '../../constants/AuthorizeConstants';
 import './App.css';
 
 import Authorize from '../Authorize';
-import FeaturedPlaylist from '../FeaturedPlaylist';
-
-const STATE_KEY = 'spotify_auth_state'
+import Filter from '../Filter';
+import Playlist from '../Playlist';
 
 class App extends Component {
 
@@ -12,12 +12,12 @@ class App extends Component {
 
     componentDidMount() {
         const { access_token, state } = this.getHashParams();
-        const storedState = window.localStorage.getItem(STATE_KEY);
+        const storedState = window.localStorage.getItem(AuthorizeConstants.STATE_KEY);
 
         if (access_token && (state == null || state !== storedState)) {
             console.log('There was an error during the authentication');
         } else {
-            window.localStorage.removeItem(STATE_KEY);    
+            window.localStorage.removeItem(AuthorizeConstants.STATE_KEY);    
             if (access_token) {
                 this.setState({ logged: true, token: access_token })
             }
@@ -47,7 +47,15 @@ class App extends Component {
     render() {
         return (
         <div className="App">
-            {this.state.logged ? <FeaturedPlaylist token={this.state.token} onError={this.onFeaturePlaylistError}/> : <Authorize/>}
+            <header className="App-header">
+                <h1 className="App-title">Spotifood</h1>
+            </header>
+            {this.state.logged ? (
+                <Fragment>
+                    <Filter/>
+                    <Playlist token={this.state.token}/>
+                </Fragment>
+            ) : <Authorize/>}
         </div>
         );
     }

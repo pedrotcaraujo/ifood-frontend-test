@@ -1,0 +1,18 @@
+.Authorize {
+    width: 70%;
+    margin: 3em auto;
+}
+
+.Authorize-button {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    width: 100%;
+    height: 56px;
+    border-radius: 500px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    background: #fff;
+    margin-top: 3em;
+}

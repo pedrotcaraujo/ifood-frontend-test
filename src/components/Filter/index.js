@@ -1,63 +1,98 @@
-import React, { Fragment, Component } from 'react';
+import React, {Component } from 'react';
 import axios from 'axios';
+import { Dropdown, Input } from '../Form';
+import Loader from '../Loader';
+
+import FeaturedPlaylistDispatcher from '../../dispatchers/FeaturedPlaylistDispatcher';
+import FilterConstants from '../../constants/FilterConstants';
+
+import debounce from '../../utils/debounce';
 
 const URL = 'http://www.mocky.io/v2/5a25fade2e0000213aa90776'
 
 class Filter extends Component {
     constructor() {
         super()
-        this.state = { data: null };
+        this.state = { 
+            loaded: false,
+            filters: []
+        };
+        this.data = {}; 
     }
     componentDidMount() {
         axios.get(URL)
-            .then(({ data }) => this.setState(data))
+            .then(({ data }) => this.setState({loaded: true, ...data}))
             .catch(err => console.log(err));
     }
 
-    buildFilters(filter) {
-        if (filter.id === 'locale') {
-            return (
-                <select>
-                    {filter.values.map(({value, name}) => <option key={value} value={value}>{name}</option>)}
-                </select>
-            )
-        }
+    handleChange = (evt) => {
+        console.log(evt.target.value);
+        if (!evt.target.value) return;
 
-        if (filter.id === 'country') {
-            return (
-                <select>
-                    {filter.values.map(({value, name}) => <option key={value} value={value}>{name}</option>)}
-                </select>
-            )
-        }
-
-        if (filter.id === 'timestamp') {
-            return (
-                <input type="date"/>
-            )
-        }
-
-        if (filter.id === 'limit') {
-            return (
-                <input type="number" max="50" min="20"/>
-            )
-        }
-
-        if (filter.id === 'offset') {
-            return (
-                <input type="number"/>
-            )
-        }
+        this.data[evt.target.name] = evt.target.value;
+        debounce(FeaturedPlaylistDispatcher.dispatch({
+            type: FilterConstants.UPDATE,
+            data: Object.assign({}, this.data)
+        }), 400);
     }
+
+    locale(data) {
+        return <Dropdown 
+                    dropdownProps={{ 
+                        name: data.id,
+                        onChange: this.handleChange
+                    }}
+                    options={[{name: data.name}, ...data.values]} 
+                />
+    }
+    country(data) {
+        return <Dropdown 
+                    dropdownProps={{ 
+                        name: data.id,
+                        onChange: this.handleChange
+                    }} 
+                    options={[{name: data.name}, ...data.values]} 
+                />
+    }
+    timestamp(data) {
+        return <Input 
+                    label={data.name}
+                    inputProps={{
+                        name: data.id,
+                        type: 'datetime-local',
+                        onChange: this.handleChange
+                    }}
+                />
+    }
+    limit(data) {
+        return  <Input 
+                    label={data.name}
+                    inputProps={{
+                        name: data.id,
+                        type: 'number',
+                        max: data.validation.max && data.validation.max,
+                        min: data.validation.min && data.validation.min,
+                        onChange: this.handleChange
+                    }}
+                />
+    }
+    offset(data) {
+        return <Input 
+                    label={data.name}
+                    inputProps={{
+                        name: data.id,
+                        type: 'number',
+                        onChange: this.handleChange
+
+                    }}
+                />
+    }
+
     render() {
         return (
-            <Fragment>
-                {this.state.filters ? (
-                    <div>
-                        {this.state.filters.map(this.buildFilters)}
-                    </div>
-                ) : 'Loading...'}
-            </Fragment>
+            <Loader loaded={this.state.loaded}>
+                {this.state.filters && this.state.filters.map(filter => this[filter.id](filter))}
+            </Loader>
         )
     }
 }
