@@ -35,7 +35,7 @@ class Playlist extends Component {
     }
 
     update(context, params = {}) {
-        this.setState({ loaded: false })
+        context.setState({ loaded: false })
         axios.get(URL, {
             params,
             headers: {
@@ -46,7 +46,15 @@ class Playlist extends Component {
             context.setState({ loaded: true, ...data });
             context.pulling(PULLING_TIMEOUT, () => context.update(context, params));
         })
-        .catch(this.props.onError);
+        .catch(() => {
+            context.setState({ 
+                loaded: true, 
+                message: 'Não foi possível fazer a busca, tente novamente...',
+                playlists: { 
+                    items: [] 
+                }
+            })
+        });
     }
 
     pulling(timeout, callback) {
@@ -95,6 +103,7 @@ class Playlist extends Component {
                         </li>                    
                     ))}
                     </ul>
+  
                 </div>
             </Loader>
         )
