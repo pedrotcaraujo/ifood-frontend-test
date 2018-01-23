@@ -14,6 +14,7 @@ class Playlist extends Component {
         super()
         this.state = {
                 loaded: false,
+                search: '',
                 message: null, 
                 playlists: { 
                     items: [] 
@@ -53,6 +54,14 @@ class Playlist extends Component {
     }
 
     onFilterChange = () => {
+        const { current, data } = FilterStore.getState();
+        const { search, ...params } = data;
+
+        if (current.name === 'search') {
+            this.setState(Object.assign({...this.state}, { search: current.value }))
+            return;
+         }
+
         if (this.timeouts.length > 0) {
             this.timeouts.forEach(timeout => {
                 window.clearTimeout(timeout)
@@ -60,17 +69,24 @@ class Playlist extends Component {
         }
 
         if (this.state.loaded) {
-            this.update(this, FilterStore.getState());
+            this.update(this, params);
         }
+    }
+
+    fuzzySearch = ({ name }) => {
+        const { search } = this.state;        
+        if (!search) { return true };
+        const re = new RegExp(search, 'i');
+        return name.match(re)
     }
 
     render() {
         return (
             <Loader loaded={this.state.loaded}>
-                <div>
+                <div className="Playlist">
                     <h2 className="Playlist-message">{this.state.message}</h2>
-                    <ul className="Playlist">
-                    {this.state.playlists.items.map(item => (
+                    <ul className="Playlist-items">
+                    {this.state.playlists.items.filter(this.fuzzySearch).map(item => (
                         <li className="Playlist-item" key={item.id}>
                             <figure>
                                 <img className="Playlist-image" src={item.images[0].url} alt={item.name}/>

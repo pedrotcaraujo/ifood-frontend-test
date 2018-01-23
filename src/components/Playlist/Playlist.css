@@ -1,4 +1,8 @@
 .Playlist {
+    width: 100%;
+}
+
+.Playlist-items {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -10,7 +14,7 @@
 }
 
 .Playlist-message {
-    font-size: 3em;
+    font-size: 2em;
     text-shadow: 1px 1px 5px #000;
 }
 

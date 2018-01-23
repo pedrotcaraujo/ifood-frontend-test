@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import './Input.css'
 
 class Input extends Component {
     render() {
         return (
-            <div>
-                {this.props.label && <label>{this.props.label}</label>}
-                <input {...this.props.inputProps}/>
+            <div className="Input">
+                {this.props.label && <label className="Input-label">{this.props.label}</label>}
+                <input className="Input-field" {...this.props.inputProps}/>
             </div>
         )
     }

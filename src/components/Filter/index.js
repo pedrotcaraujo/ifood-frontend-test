@@ -1,7 +1,9 @@
 import React, {Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import { Dropdown, Input } from '../Form';
 import Loader from '../Loader';
+import './Filter.css';
 
 import FeaturedPlaylistDispatcher from '../../dispatchers/FeaturedPlaylistDispatcher';
 import FilterConstants from '../../constants/FilterConstants';
@@ -17,7 +19,8 @@ class Filter extends Component {
             loaded: false,
             filters: []
         };
-        this.data = {}; 
+        this.data = {};
+        this.debouncedChange = debounce(this.onChange, 1000);
     }
     componentDidMount() {
         axios.get(URL)
@@ -26,48 +29,57 @@ class Filter extends Component {
     }
 
     handleChange = (evt) => {
-        console.log(evt.target.value);
-        if (!evt.target.value) return;
+        evt.persist();
+        this.debouncedChange(evt);
+    }
 
-        this.data[evt.target.name] = evt.target.value;
-        debounce(FeaturedPlaylistDispatcher.dispatch({
+    onChange = (evt) => {        
+        const current = {
+            name: evt.target.name,
+            value: evt.target.value
+        }
+
+        this.data[current.name] = current.value;
+        this.data.timestamp = moment().format();
+
+        FeaturedPlaylistDispatcher.dispatch({
             type: FilterConstants.UPDATE,
-            data: Object.assign({}, this.data)
-        }), 400);
+            data: Object.assign({}, { 
+                current: current, 
+                data: this.data
+            })
+        })
+    }
+
+    build = (data) => {
+        return typeof this[data.id] === 'function' && this[data.id](data)
     }
 
     locale(data) {
-        return <Dropdown 
+        return <Dropdown
+                    key={data.id} 
                     dropdownProps={{ 
                         name: data.id,
                         onChange: this.handleChange
                     }}
-                    options={[{name: data.name}, ...data.values]} 
+                    options={[{name: data.name, value: ''}, ...data.values]} 
                 />
     }
     country(data) {
         return <Dropdown 
+                    key={data.id} 
                     dropdownProps={{ 
                         name: data.id,
                         onChange: this.handleChange
                     }} 
-                    options={[{name: data.name}, ...data.values]} 
-                />
-    }
-    timestamp(data) {
-        return <Input 
-                    label={data.name}
-                    inputProps={{
-                        name: data.id,
-                        type: 'datetime-local',
-                        onChange: this.handleChange
-                    }}
+                    options={[{name: data.name, value: ''}, ...data.values]} 
                 />
     }
     limit(data) {
         return  <Input 
-                    label={data.name}
+                    key={data.id} 
                     inputProps={{
+                        placeholder: data.name,
                         name: data.id,
                         type: 'number',
                         max: data.validation.max && data.validation.max,
@@ -78,8 +90,9 @@ class Filter extends Component {
     }
     offset(data) {
         return <Input 
-                    label={data.name}
+                    key={data.id} 
                     inputProps={{
+                        placeholder: data.name,
                         name: data.id,
                         type: 'number',
                         onChange: this.handleChange
@@ -91,7 +104,17 @@ class Filter extends Component {
     render() {
         return (
             <Loader loaded={this.state.loaded}>
-                {this.state.filters && this.state.filters.map(filter => this[filter.id](filter))}
+                <div className="Filter">
+                    <Input 
+                        inputProps={{
+                            placeholder: "Buscar por nome",
+                            name: 'search',
+                            type: 'text',
+                            onChange: this.handleChange
+                        }}
+                    />
+                    {this.state.filters.map(this.build)}
+                </div>
             </Loader>
         )
     }

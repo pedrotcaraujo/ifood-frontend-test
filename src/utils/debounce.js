@@ -1,4 +1,3 @@
-
 const debounce = (fn, wait = 100, immediate = false) => (...args) => {
     const obj = this;
     let timeout;

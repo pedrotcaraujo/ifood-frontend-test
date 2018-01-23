@@ -3,7 +3,10 @@ import FeaturedPlaylistDispatcher from '../dispatchers/FeaturedPlaylistDispatche
 import FilterConstants from '../constants/FilterConstants.js';
 import EventEmitter from 'events';
 
-let filter = {}
+let filter = {
+    current: {},
+    data: {}
+}
 
 const FilterStore = Object.assign({}, EventEmitter.prototype, {
 	getState: function() {

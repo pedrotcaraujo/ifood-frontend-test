@@ -4,8 +4,8 @@
 }
 
 .App-header {
-  margin: 0 30px;
+  margin: 0 30px 30px;
+  border-bottom: thin solid #fff;
   padding: 2px;
-  text-align: left;
   text-transform: uppercase;
 }

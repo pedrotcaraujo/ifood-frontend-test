@@ -1,0 +1,6 @@
+.Filter {
+    display: flex;
+    margin: 0 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
