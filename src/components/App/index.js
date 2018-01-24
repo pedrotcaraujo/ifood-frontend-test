@@ -16,7 +16,6 @@ class App extends Component {
     componentDidMount() {
         const { access_token, state } = getHashParams();
         const storedState = window.localStorage.getItem(AuthorizeConstants.STATE_KEY);
-
         if (access_token && (state == null || state !== storedState)) {
             console.log('There was an error during the authentication');
         } else {
@@ -25,13 +24,6 @@ class App extends Component {
                 this.setState({ logged: true, token: access_token })
             }
         }
-    }
-
-    onFeaturePlaylistError = () => {
-        this.setState({
-            logged: false,
-            token: null
-        })
     }
 
     render() {
