@@ -12,16 +12,10 @@ import debounce from '../../utils/debounce';
 
 const URL = 'http://www.mocky.io/v2/5a25fade2e0000213aa90776'
 
-class Filter extends Component {
-    constructor() {
-        super()
-        this.state = { 
-            loaded: false,
-            filters: []
-        };
-        this.data = {};
-        this.debouncedChange = debounce(this.onChange, 1000);
-    }
+class Filter extends Component {    
+    state =  { loaded: false, filters: [] };
+    data = {}
+
     componentDidMount() {
         axios.get(URL)
             .then(({ data }) => this.setState({loaded: true, ...data}))
@@ -30,7 +24,7 @@ class Filter extends Component {
 
     handleChange = (evt) => {
         evt.persist();
-        this.debouncedChange(evt);
+        debounce(this.onChange, 1000)(evt);
     }
 
     onChange = (evt) => {        
@@ -79,11 +73,11 @@ class Filter extends Component {
         return  <Input 
                     key={data.id} 
                     inputProps={{
-                        placeholder: data.name,
+                        placeholder: `${data.name} min: ${data.validation.min} max: ${data.validation.max}`,
                         name: data.id,
                         type: 'number',
-                        max: data.validation.max && data.validation.max,
-                        min: data.validation.min && data.validation.min,
+                        max: data.validation.max,
+                        min: data.validation.min,
                         onChange: this.handleChange
                     }}
                 />

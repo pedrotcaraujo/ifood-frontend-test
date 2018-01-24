@@ -4,14 +4,17 @@ import './App.css';
 
 import Authorize from '../Authorize';
 import Filter from '../Filter';
-import Playlist from '../Playlist';
+import Playlists from '../Playlists';
+import Player from '../Player';
+
+import getHashParams from '../../utils/getHashParams'
 
 class App extends Component {
 
     state = { logged: false, token: null }
 
     componentDidMount() {
-        const { access_token, state } = this.getHashParams();
+        const { access_token, state } = getHashParams();
         const storedState = window.localStorage.getItem(AuthorizeConstants.STATE_KEY);
 
         if (access_token && (state == null || state !== storedState)) {
@@ -22,19 +25,6 @@ class App extends Component {
                 this.setState({ logged: true, token: access_token })
             }
         }
-    }
-
-  /**
-   * Obtains parameters from the hash of the URL
-   * @return Object
-   */
-    getHashParams() {
-        const hashParams = {};
-        window.location.hash.substring(1).split('&').forEach(p => {
-            const param = p.split('=');
-            hashParams[param[0]] = decodeURIComponent(param[1]);
-        })
-        return hashParams;
     }
 
     onFeaturePlaylistError = () => {
@@ -48,12 +38,13 @@ class App extends Component {
         return (
         <div className="App">
             <header className="App-header">
-                <h1 className="App-title">Spotify Featured Playlist</h1>
+                <h1 className="App-title">Spotifood</h1>
             </header>
             {this.state.logged ? (
                 <Fragment>
                     <Filter/>
-                    <Playlist token={this.state.token}/>
+                    <Playlists token={this.state.token}/>
+                    <Player />
                 </Fragment>
             ) : <Authorize/>}
         </div>

@@ -1,27 +1,21 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import './Playlist.css';
+import { removeEmpty, fuzzySearch } from '../../utils';
+import './Playlists.css';
 
+import FeaturedPlaylistDispatcher from '../../dispatchers/FeaturedPlaylistDispatcher';
+import PlaylistsConstants from '../../constants/PlaylistsConstants';
 import FilterStore from '../../stores/FilterStore';
 
 import Loader from '../Loader';
 
 const URL = 'https://api.spotify.com/v1/browse/featured-playlists';
-const PULLING_TIMEOUT = 30000;
+const PULLING_TIMEOUT = 300000;
 
-class Playlist extends Component {
-    constructor() {
-        super()
-        this.state = {
-                loaded: false,
-                search: '',
-                message: null, 
-                playlists: { 
-                    items: [] 
-                }
-            }
-        this.timeouts = [];
-    }
+class Playlists extends Component {    
+    state = { loaded: false, search: '', message: null, playlists: { items: [] }, playing: {} }
+    timeouts = []
+
     componentDidMount() {
         FilterStore.addListener(this.onFilterChange)
         if (this.props.token) {
@@ -77,28 +71,34 @@ class Playlist extends Component {
         }
 
         if (this.state.loaded) {
-            this.update(this, params);
+            this.update(this, removeEmpty(params));
         }
     }
 
-    fuzzySearch = ({ name }) => {
-        const { search } = this.state;        
-        if (!search) { return true };
-        const re = new RegExp(search, 'i');
-        return name.match(re)
+    onPlay(playlist) {
+        FeaturedPlaylistDispatcher.dispatch({
+            type: PlaylistsConstants.UPDATE,
+            data: Object.assign({}, { 
+                playing: playlist,
+                playlists: this.state.playlists
+            })
+        })
     }
 
     render() {
         return (
             <Loader loaded={this.state.loaded}>
-                <div className="Playlist">
-                    <h2 className="Playlist-message">{this.state.message}</h2>
-                    <ul className="Playlist-items">
-                    {this.state.playlists.items.filter(this.fuzzySearch).map(item => (
-                        <li className="Playlist-item" key={item.id}>
-                            <figure>
-                                <img className="Playlist-image" src={item.images[0].url} alt={item.name}/>
-                                <figcaption className="Playlist-figcaption">{item.name}</figcaption>
+                <div className="Playlists">
+                    <h2 className="Playlists-message">{this.state.message}</h2>
+                    <ul className="Playlists-items">
+                    {this.state.playlists.items.filter(item => fuzzySearch(item.name, this.state.search)).map(item => (
+                        <li onClick={() => this.onPlay(item)} className="Playlists-item" key={item.id}>
+                            <figure className="Playlists-figure">
+                                <div className="Playlists-player">
+                                    <button className="Playlists-button"/>
+                                    <img className="Playlists-image" src={item.images[0].url} alt={item.name}/>
+                                </div>
+                                <figcaption className="Playlists-figcaption">{item.name}</figcaption>
                             </figure>
                         </li>                    
                     ))}
@@ -110,4 +110,4 @@ class Playlist extends Component {
     }
 }
 
-export default Playlist;
+export default Playlists;

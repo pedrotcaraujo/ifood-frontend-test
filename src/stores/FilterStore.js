@@ -3,14 +3,14 @@ import FeaturedPlaylistDispatcher from '../dispatchers/FeaturedPlaylistDispatche
 import FilterConstants from '../constants/FilterConstants.js';
 import EventEmitter from 'events';
 
-let filter = {
+let store = {
     current: {},
     data: {}
 }
 
 const FilterStore = Object.assign({}, EventEmitter.prototype, {
 	getState: function() {
-		return filter;
+		return store;
 	},
 
 	addListener: function(callback) {
@@ -27,7 +27,7 @@ const FilterStore = Object.assign({}, EventEmitter.prototype, {
 })
 
 function _setFilter(data) {
-	filter = Object.assign({}, data);
+	store = Object.assign({}, data);
 }
 
 FeaturedPlaylistDispatcher.register(action => {

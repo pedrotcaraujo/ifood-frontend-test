@@ -1,5 +1,5 @@
 const FilterConstants = {
-    UPDATE: 'update'
+    UPDATE: 'update_filter'
 };
 
 export default Object.freeze(FilterConstants);

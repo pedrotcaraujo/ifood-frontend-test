@@ -1,13 +1,13 @@
 
 import FeaturedPlaylistDispatcher from '../dispatchers/FeaturedPlaylistDispatcher.js';
-import PlaylistConstants from '../constants/PlaylistConstants.js';
+import PlaylistsConstants from '../constants/PlaylistsConstants.js';
 import EventEmitter from 'events';
 
-let playlist = null
+let store = {}
 
-const PlaylistStore = Object.assign({}, EventEmitter.prototype, {
+const PlaylistsStore = Object.assign({}, EventEmitter.prototype, {
 	getState: function() {
-		return playlist;
+		return store;
 	},
 
 	addListener: function(callback) {
@@ -23,15 +23,15 @@ const PlaylistStore = Object.assign({}, EventEmitter.prototype, {
 	}
 })
 
-function _setPlaylist(data) {
-	playerState = data;
+function _setPlaylists(data) {
+	store = data;
 }
 
 FeaturedPlaylistDispatcher.register(action => {
-	if (action.type === PlaylistConstants.UPDATE) {
-		_setPlaylist(action.data);
-		PlaylistStore.emitEvent();
+	if (action.type === PlaylistsConstants.UPDATE) {
+		_setPlaylists(action.data);
+		PlaylistsStore.emitEvent();
 	}
 })
 
-export default PlaylistStore;
+export default PlaylistsStore;

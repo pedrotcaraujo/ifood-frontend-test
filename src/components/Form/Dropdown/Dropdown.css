@@ -1,7 +1,7 @@
 .Dropdown {
     margin: 5px 10px;
+    width: 100%;
 }
-
 
 .Dropdown-field {
     border: none;
@@ -14,4 +14,6 @@
     margin: 0;
     padding: 0 8px;
     width: 100%;
+    font-size: 1em;
+    font-weight: bold;
 }

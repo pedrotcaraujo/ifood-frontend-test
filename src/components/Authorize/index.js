@@ -3,28 +3,16 @@ import buildURL from 'build-url';
 import AuthorizeConstants from '../../constants/AuthorizeConstants';
 import './Authorize.css'
 
+import randomString from '../../utils/randomString';
+
 const URL = 'https://accounts.spotify.com/authorize';
 const CLIENT_ID = 'c421219fc6f34ffb9c55cfa5ede32a6d';
-const REDIRECT_URI = 'http://localhost:3000';
+const REDIRECT_URI = window.location.origin;
 
 class Authorize extends Component {
-
-    /**
-     * Generates a random string containing numbers and letters
-     * @param  {number} length The length of the string
-     * @return {string} The generated string
-     */
-    generateRandomString(length) {
-        let text = '';
-        let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < length; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        return text;
-    };
     
     send = () => {
-        const state = this.generateRandomString(16)
+        const state = randomString(16)
         window.localStorage.setItem(AuthorizeConstants.STATE_KEY, state);
         window.location = buildURL(URL, {
             queryParams: {
@@ -38,7 +26,7 @@ class Authorize extends Component {
     render() {
         return (
             <div className="Authorize">
-                <img alt="" src="https://open.scdn.co/static/images/logo-white-2x.png"/>
+                <img width="230px" alt="Spotify logo" src="https://open.scdn.co/static/images/logo-white-2x.png"/>
                 <button className="Authorize-button" onClick={this.send}>Acessar com Spotify</button>
             </div>
         )

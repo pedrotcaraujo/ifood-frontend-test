@@ -1,5 +1,5 @@
 const PlaylistConstants = {
-    UPDATE: 'update'
+    UPDATE: 'update_playlists'
 };
 
 export default Object.freeze(PlaylistConstants);
