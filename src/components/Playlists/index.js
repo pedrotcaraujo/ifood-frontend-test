@@ -10,10 +10,10 @@ import FilterStore from '../../stores/FilterStore';
 import Loader from '../Loader';
 
 const URL = 'https://api.spotify.com/v1/browse/featured-playlists';
-const PULLING_TIMEOUT = 300000;
+const PULLING_TIMEOUT = 30000;
 
 class Playlists extends Component {    
-    state = { loaded: false, search: '', message: null, playlists: { items: [] }, playing: {} }
+    state = { loaded: false, search: '', message: null, playlists: { items: [] } }
     timeouts = []
 
     componentDidMount() {
