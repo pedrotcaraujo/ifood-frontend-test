@@ -27,7 +27,7 @@ const FilterStore = Object.assign({}, EventEmitter.prototype, {
 })
 
 function _setFilter(data) {
-	store = Object.assign({}, data);
+	store = { ...data };
 }
 
 AppDispatcher.register(action => {

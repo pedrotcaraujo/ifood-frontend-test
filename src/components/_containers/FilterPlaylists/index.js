@@ -22,8 +22,14 @@ class FilterPlaylists extends Component {
     }
 
     async componentDidMount() {
-        const data = await axios.get(URL_FILTER).then(({ data }) => data);
-        this.setState(Object.assign({}, this.state, { filtersAPI: { isLoaded: true, data } }));
+        try {
+            const data = await axios.get(URL_FILTER).then(({ data }) => data);
+            this.setState({...this.state, ...{ filtersAPI: { isLoaded: true, data } } });
+        } catch(err) {
+            const data = require('../../../data-filter').default;
+            this.setState({...this.state, ...{ filtersAPI: { isLoaded: true, data } } });
+        }
+
     }
 
     dispatch = (filter) => {

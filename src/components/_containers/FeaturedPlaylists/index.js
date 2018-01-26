@@ -40,25 +40,25 @@ class FeaturedPlaylists extends Component {
     }
 
     updatePlaylists = async (context, params = {}) => {
-        context.setState(Object.assign({}, context.state, { 
+        context.setState({...context.state, ...{ 
             playlistsAPI: { 
                 isLoaded: false,
                 data: {}
             } 
-        }));
+        } });
 
         try {
             const data = await axios.get(URL_SPOTIFY, { params, headers: { 'Authorization': 'Bearer ' + context.props.token } }).then(({ data }) => data)
-            context.setState(Object.assign({}, context.state, { 
+            context.setState({...context.state, ...{ 
                 playlistsAPI: {
                     isLoaded: true, 
                     data 
                 }
-            }));
+            } });
             
             context.pulling(PULLING_TIMEOUT, () => context.updatePlaylists(context, params));
         } catch(err) {
-            context.setState(Object.assign({}, context.state, { 
+            context.setState({...context.state, ...{ 
                 playlistsAPI: {
                     isLoaded: true, 
                     data: {
@@ -68,7 +68,7 @@ class FeaturedPlaylists extends Component {
                         }
                     }
                 }
-            }));
+            } } );
         }
     }
 
@@ -81,7 +81,7 @@ class FeaturedPlaylists extends Component {
         const { search, ...params } = data;
 
         if (current.name === 'search') {
-            this.setState(Object.assign({}, this.state, { filter: data }))
+            this.setState({...this.state, ...{ filter: data } })
             return;
          }
 
@@ -97,7 +97,7 @@ class FeaturedPlaylists extends Component {
     }
 
     onPlayAPlaylist = (playlist) => {
-        this.setState(Object.assign({}, this.state, { player: { isPlayling: true, data: playlist }}))
+        this.setState({...this.state, ...{ player: { isPlayling: true, data: playlist } } })
     }
 
     render() {
