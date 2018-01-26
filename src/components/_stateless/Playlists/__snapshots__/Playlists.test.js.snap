@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="Playlists"
+>
+  <h2
+    className="Playlists-message"
+  >
+    Teste
+  </h2>
+  <ul
+    className="Playlists-items"
+  />
+</div>
+`;

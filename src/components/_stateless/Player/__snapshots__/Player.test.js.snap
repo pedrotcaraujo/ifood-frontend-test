@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="Player"
+>
+  <iframe
+    allowtransparency="true"
+    frameBorder="0"
+    height="85px"
+    src="https://open.spotify.com/embed?uri=undefined"
+    title="spotify player"
+    width="100%"
+  />
+</div>
+`;
