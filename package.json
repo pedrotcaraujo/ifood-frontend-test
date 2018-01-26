@@ -2,7 +2,7 @@
   "name": "ifood-frontend-test",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "pedrotcaraujo.github.io/fender/ifood-frontend-test",
+  "homepage" : "https://pedrotcaraujo.github.io/ifood-frontend-test",
   "dependencies": {
     "axios": "^0.17.1",
     "build-url": "^1.0.10",
