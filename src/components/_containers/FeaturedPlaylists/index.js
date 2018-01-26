@@ -81,7 +81,7 @@ class FeaturedPlaylists extends Component {
         const { search, ...params } = data;
 
         if (current.name === 'search') {
-            this.setState({...this.state, ...{ filter: data } })
+            this.setState({...this.state, filter: data })
             return;
          }
 
@@ -97,7 +97,7 @@ class FeaturedPlaylists extends Component {
     }
 
     onPlayAPlaylist = (playlist) => {
-        this.setState({...this.state, ...{ player: { isPlayling: true, data: playlist } } })
+        this.setState({...this.state, player: { isPlayling: true, data: playlist } })
     }
 
     render() {
