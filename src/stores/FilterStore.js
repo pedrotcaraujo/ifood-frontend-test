@@ -1,5 +1,5 @@
 
-import FeaturedPlaylistDispatcher from '../dispatchers/FeaturedPlaylistDispatcher.js';
+import AppDispatcher from '../dispatchers/AppDispatcher.js';
 import FilterConstants from '../constants/FilterConstants.js';
 import EventEmitter from 'events';
 
@@ -30,7 +30,7 @@ function _setFilter(data) {
 	store = Object.assign({}, data);
 }
 
-FeaturedPlaylistDispatcher.register(action => {
+AppDispatcher.register(action => {
 	if (action.type === FilterConstants.UPDATE) {
 		_setFilter(action.data);
 		FilterStore.emitEvent();

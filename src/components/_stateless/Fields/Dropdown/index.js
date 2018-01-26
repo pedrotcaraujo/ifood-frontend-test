@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Dropdown.css';
-import randomString from '../../../utils/randomString'
+import randomString from '../../../../utils/randomString'
 
 class Dropdown extends Component {
     render() {

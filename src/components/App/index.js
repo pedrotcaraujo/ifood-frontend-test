@@ -1,11 +1,10 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import AuthorizeConstants from '../../constants/AuthorizeConstants';
 import './App.css';
 
-import Authorize from '../Authorize';
-import Filter from '../Filter';
-import Playlists from '../Playlists';
-import Player from '../Player';
+import Authorize from '../_containers/Authorize';
+import FilterPlaylists from '../_containers/FilterPlaylists';
+import FeaturedPlaylists from '../_containers/FeaturedPlaylists';
 
 import getHashParams from '../../utils/getHashParams'
 
@@ -33,11 +32,10 @@ class App extends Component {
                 <h1 className="App-title">Spotifood</h1>
             </header>
             {this.state.logged ? (
-                <Fragment>
-                    <Filter/>
-                    <Playlists token={this.state.token}/>
-                    <Player />
-                </Fragment>
+                <div>
+                    <FilterPlaylists/>
+                    <FeaturedPlaylists token={this.state.token} />
+                </div>
             ) : <Authorize/>}
         </div>
         );
