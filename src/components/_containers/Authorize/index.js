@@ -7,7 +7,7 @@ import randomString from '../../../utils/randomString';
 
 const URL = 'https://accounts.spotify.com/authorize';
 const CLIENT_ID = 'c421219fc6f34ffb9c55cfa5ede32a6d';
-const REDIRECT_URI = window.location.origin;
+const REDIRECT_URI = window.location.origin + (window.location.pathname.length > 1 ? window.location.pathname : '');
 
 class Authorize extends Component {    
     send = () => {
