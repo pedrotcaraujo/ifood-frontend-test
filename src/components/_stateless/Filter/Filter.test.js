@@ -3,12 +3,9 @@ import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
 import Filter from './index';
 
-jest.mock('axios')
-
-const axios = require('axios');
-axios.get = jest.fn(() => Promise.resolve([]))
+const onChangeMock = jest.fn();
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Filter />, div);
+  ReactDOM.render(<Filter data={{ filters: [] }} onChange={onChangeMock} />, div);
 });

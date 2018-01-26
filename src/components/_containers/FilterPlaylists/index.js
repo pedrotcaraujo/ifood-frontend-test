@@ -21,13 +21,9 @@ class FilterPlaylists extends Component {
         }
     }
 
-    componentDidMount() {
-        this.fetchFilter();
-    }
-
-    fetchFilter = async () => {
-       const data = await axios.get(URL_FILTER).then(({ data }) => data);
-       this.setState(Object.assign({}, this.state, { filtersAPI: { isLoaded: true, data } }));
+    async componentDidMount() {
+        const data = await axios.get(URL_FILTER).then(({ data }) => data);
+        this.setState(Object.assign({}, this.state, { filtersAPI: { isLoaded: true, data } }));
     }
 
     dispatch = (filter) => {
@@ -35,10 +31,6 @@ class FilterPlaylists extends Component {
             type: FilterConstants.UPDATE,
             data: filter
         })
-    }
-
-    onPlayAPlaylist(playlist) {
-        this.setState(Object.assign({}, this.state, { player: { isPlayling: true, data: playlist }}))
     }
 
     render() {
